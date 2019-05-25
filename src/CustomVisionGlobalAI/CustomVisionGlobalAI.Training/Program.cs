@@ -12,7 +12,7 @@ namespace CustomVisionGlobalAI.Training
     class Program
     {
         private const string endPoint = "https://southcentralus.api.cognitive.microsoft.com";
-        private const string trainingKey = "c8254e76169944e9984ffd05d141833e";
+        private const string trainingKey = "42c6daefe89d42a6b09b8b8235e0d2f2";
 
         static void Main(string[] args)
         {
@@ -22,9 +22,9 @@ namespace CustomVisionGlobalAI.Training
                 Endpoint = endPoint
             };
 
-            Project project = trainingApi.GetProject(new Guid("cec8fbf3-fb17-4f06-a9db-d1623dec02f4"));
+            Project project = trainingApi.GetProject(new Guid("80b63914-a25c-4bcb-a483-4c8e261357a0"));
 
-            IDictionary<string, string> dadosImagens = JsonConvert.DeserializeObject<IDictionary<string, string>>(File.ReadAllText("Imagens.json"));
+            IDictionary<string, string> dadosImagens = JsonConvert.DeserializeObject<IDictionary<string, string>>(File.ReadAllText("imagens.json"));
 
             foreach (var chave in dadosImagens.Keys)
             {
@@ -45,7 +45,7 @@ namespace CustomVisionGlobalAI.Training
             }
 
             var publishedModelName = "treeClassModel";
-            var predictionResourceId = "/subscriptions/6539021a-2e2a-4733-b025-cc48a0397c9e/resourceGroups/GlobalAI/providers/Microsoft.CognitiveServices/accounts/ModeloCarro_Prediction";
+            var predictionResourceId = "/subscriptions/6539021a-2e2a-4733-b025-cc48a0397c9e/resourceGroups/GlobalAI/providers/Microsoft.CognitiveServices/accounts/GAI_Prediction";
             trainingApi.PublishIteration(project.Id, iteration.Id, publishedModelName, predictionResourceId);
         }
     }

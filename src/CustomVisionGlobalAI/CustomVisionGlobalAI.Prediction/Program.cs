@@ -1,5 +1,7 @@
 ﻿using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace CustomVisionGlobalAI.Prediction
@@ -7,20 +9,25 @@ namespace CustomVisionGlobalAI.Prediction
     class Program
     {
         private const string endPoint = "https://southcentralus.api.cognitive.microsoft.com";
-        private const string trainingKey = "bccc9e4e95be46b3ac373f185e936816";
+        private const string predictionKey = "d002e41dfc0746e1b0aac9fe7bbd6567";
 
 
         static void Main(string[] args)
         {
             CustomVisionPredictionClient endpoint = new CustomVisionPredictionClient()
             {
-                ApiKey = trainingKey,
+                ApiKey = predictionKey,
                 Endpoint = endPoint
             };
 
-            var imagemTeste = new MemoryStream(File.ReadAllBytes("D:\\Downloads\\Fabricio\\Projetos\\CustomVisionGlobalAI\\fotos\\teste\\Teste01.jpg"));
+            IDictionary<string, string> dadosImagens = JsonConvert.DeserializeObject<IDictionary<string, string>>(File.ReadAllText("opcoes.json"));
 
-            var result = endpoint.ClassifyImage(new Guid("cec8fbf3-fb17-4f06-a9db-d1623dec02f4"), "treeClassModel", imagemTeste);
+            Console.WriteLine("Selecione a imagem de teste.");
+            string opcao = Console.ReadLine();
+
+            var imagemTeste = new MemoryStream(File.ReadAllBytes(dadosImagens[opcao]));
+
+            var result = endpoint.ClassifyImage(new Guid("80b63914-a25c-4bcb-a483-4c8e261357a0"), "treeClassModel", imagemTeste);
 
             foreach (var c in result.Predictions)
             {
